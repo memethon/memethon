@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 
 class console(object):
     log = print
-    trace = traceback.print_exc()
+    trace = traceback.print_exc
 
     @staticmethod
     def clear():
