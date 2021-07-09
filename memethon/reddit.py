@@ -2,7 +2,7 @@ import sys
 import requests
 
 
-class Post:
+class Submission:
     def __init__(self, data: dict):
         self._data = data
 
@@ -14,29 +14,10 @@ class Post:
         return self._data
 
     def __eq__(self, other):
-        return isinstance(other, Post) and self._data["id"] == other._data["id"]
+        return isinstance(other, Submission) and self._data["id"] == other._data["id"]
 
     def __ne__(self, other):
         return not self.__eq__(other)
-
-
-class Subreddit(object):
-    def __init__(self, data: dict):
-        self._data = data
-
-    #
-    #     for key, value in self._data.items():
-    #         setattr(self, str(key).lower(), value)
-    #
-    @property
-    def raw_data(self):
-        return self._data
-
-    # def __eq__(self, other):
-    #     return isinstance(other, Post) and self._data["id"] == other._data["id"]
-    #
-    # def __ne__(self, other):
-    #     return not self.__eq__(other)
 
 
 def get_posts_from_subreddit(subreddit: str = "dogecoin", category="", count: int = 10, **kwargs):
@@ -45,9 +26,4 @@ def get_posts_from_subreddit(subreddit: str = "dogecoin", category="", count: in
     response = requests.get(f"https://www.reddit.com/r/{subreddit}/{category}.json?count={count}",
                             headers={"User-agent": user_agent})
     for post_data in response.json()['data']['children']:
-        yield Post(post_data["data"])
-
-
-print(list(get_posts_from_subreddit())[0].url)
-# for post in get_posts_from_subreddit():
-#     print(post.title)
+        yield Submission(post_data["data"])
